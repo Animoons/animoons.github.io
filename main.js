@@ -51,6 +51,7 @@ const syllabary = [
     " y     ᔦ ᔨ ᔪ ᔭ ᔩ ᔫ ᔮ ᔾ ",
     " w     ᐌ ᐎ ᐒ ᐗ ᐐ ᐔ ᐙ ᐤ ",
 ];
+const illegal = '0123456789flqruvx';
 
 function convertToSyllabary(w) {
     // Convert Ojibwe to Syllabary
@@ -61,18 +62,21 @@ function convertToSyllabary(w) {
         // The split produces triples (noise, consonants, vowels)
         // The noise is simply echoed (except the letter 'h')
         // The CV is converted using the table above.
-        result += a[i]=='h' ? 'ᐦ' : a[i];
+        result += a[i].toLowerCase()=='h' ? 'ᐦ' : a[i];
         let u = a[i+1] ? syllabary.findIndex(s => s.indexOf(a[i+1].toLowerCase()) > 0) : 0;
         let v = a[i+2] ? vowels.indexOf(a[i+2].toLowerCase())*2 + 7 : 21;
         if (u > 0 || v < 21)
             result += syllabary[u][v];
+        if (a[i] > ' ' && illegal.indexOf(a[i].toLowerCase()) >= 0) {
+            result = w;
+            break;
+        }
     }
     if (result=='') return '&nbsp;';
     return result;
 }
 
 function removeEntities(w) {
-
     // remove all the HTML entities, convert &nbsp; to a space, etc.
     scratch = scratch || document.createElement('textarea');
     scratch.innerHTML = w;
@@ -91,7 +95,6 @@ function newWord(word) {
 
 function loadStory(s) {
     const new_pg = sep_tag + sep_pg + sep_tag;
-    const no_eng = new RegExp(sep_tr + '\\s*' + sep_tag,'g');
     return axios.get(s+'.html').then(res => {
         let text = res.data;
         text = text.substr(text.indexOf('<body'));
