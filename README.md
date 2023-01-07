@@ -1,6 +1,13 @@
-# For localhost testing
+# To-do list
 
-For testing you might want to try IIS express or else download HFS (http file server) for windows.  Run HFS <directory name>
+[ ] add some decorative borders
+[ ] fix thunderer look terrible on iphone in portrait mode
+[ ] add option to change font size and colors
+[ ] animate the cell resize when turning english on/off
+[ ] last digit is missing on sylabary conversion
+[ ] fix back button (edit history)
+[ ] modify URL when story is open
+
 
 # Ojibwe Story Viewer
 
@@ -26,3 +33,11 @@ For example,
 
     xxxx
     yyyy
+
+
+
+# For localhost testing
+
+For testing you might want to try IIS express or else download HFS (http file server) for windows.  Run HFS <directory name>
+
+# 
