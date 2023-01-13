@@ -227,8 +227,15 @@ function storyMode(x) {
     get('pagelist').hidden = x;
 }
 
+function pushState(name = '') {
+    let q = name ? '?name='+name : '?list';
+    let t = 'Ojibwe Stories - ' + name;
+    history.pushState({name},t,q);
+    document.title = t;
+}
+
 function viewPageList() {
-    history.pushState({name:''},'','?list');
+    pushState();
     storyMode(false);
     if (!stories) {
         get('storylist').innerHTML = 'Loading...';
@@ -240,8 +247,8 @@ function viewStory(name, allowPush=true) {
     storyMode(true);
     if (name) {
         currentStoryName = name;
-        if (allowPush)
-            history.pushState({name},'','?name='+name);
+        if (allowPush) pushState(name);
+        document.title = 'Ojibwe Stories - ' + name;
     }
     get('story').innerHTML = renderStory(stories[currentStoryName]);
     applyMode();
