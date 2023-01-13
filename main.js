@@ -1,5 +1,3 @@
-console.log('===== Begin main.js ========');
-
 /*
 Ojibwe Story Viewer
 This is a JS script to display stories in two languages. It is pure client-side code.
@@ -121,7 +119,6 @@ function loadPageList() {
         text = text.replaceAll(/\s+/g,' ');
         let storyNames = text.split(sep_tag).map(s => s.trim());
         storyNames = storyNames.filter(s => s && s.length > 1);
-        console.log('Story names =',storyNames);
         stories = Object.fromEntries(storyNames.map(s => [s,'']));
         let ok = [];
         for (let s of storyNames) {
@@ -129,7 +126,6 @@ function loadPageList() {
         }
         return Promise.allSettled(ok).then(results => {
             get('storylist').innerHTML = renderPageList();
-            console.log('Stories',stories);
             // if nothing was successful,
             if (!results.some(r => r.status == 'fulfilled')) stories = null;
         });
@@ -159,6 +155,8 @@ function renderPageList() {
 
 function renderStory(words) {
     let result = '<div class="words">';
+    if (!words)
+        return result + 'Story not found.</div>';
     for (let w of words) {
         if (w[0]==sep_pg) {
             result += '</div>\n<div class="words">';
@@ -230,6 +228,7 @@ function storyMode(x) {
 }
 
 function viewPageList() {
+    history.pushState({name:''},'','?list');
     storyMode(false);
     if (!stories) {
         get('storylist').innerHTML = 'Loading...';
@@ -237,9 +236,13 @@ function viewPageList() {
     } 
 }
 
-function viewStory(name) {
+function viewStory(name, allowPush=true) {
     storyMode(true);
-    if (name) currentStoryName = name;
+    if (name) {
+        currentStoryName = name;
+        if (allowPush)
+            history.pushState({name},'','?name='+name);
+    }
     get('story').innerHTML = renderStory(stories[currentStoryName]);
     applyMode();
 }
@@ -278,9 +281,19 @@ function onClick(e,a,b) {
 
 function onLoad() {
     // This gets called one time when the page loads
-    loadPageList();
     storyMode(false);
+    loadPageList().then(() => {
+        let name = (new URLSearchParams(window.location.search)).get('name');
+        if (name) {
+            history.replaceState({name},'');
+            viewStory(name, 0);
+        }
+    });
+}
 
-    // TODO - put story name in URL
+function onPopState(e) {
+    storyMode(false);
+    let name = e?.state?.name;
+    if (name) viewStory(name, 0);
 }
 onLoad();
