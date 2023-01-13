@@ -3,10 +3,9 @@
 - [ ] add some decorative borders
 - [x] fix thunderer look terrible on iphone in portrait mode
 - [ ] add option to change font size and colors
-- [x] animate the cell resize when turning english on/off
 - [x] last digit is missing on sylabary conversion
-- [ ] fix back button (edit history)
-- [ ] modify URL when story is open
+- [x] fix back button (edit history)
+- [x] modify URL when story is open
 
 
 # Ojibwe Story Viewer
