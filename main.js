@@ -149,7 +149,7 @@ function storyTitle(s) {
 }
 
 function renderPageList() {
-    result = '<ul>';
+    result = '<ul class="stories">';
     for (let s in stories) {
         let title = storyTitle(s);
         result += `<li onclick="viewStory('${s}')"><b>${s}</b> - ${title}</li>`;
@@ -269,8 +269,11 @@ function viewMode(m) {
 }
 
 function onClick(e,a,b) {
-    if (currentMode != 4)
-        e.target.parentElement.classList.toggle('x');
+    if (currentMode != 4) {
+        let p = e.target.parentElement;
+        if (p?.parentElement?.parentElement?.id == 'story')
+            p.classList.toggle('x');
+    }
 }
 
 function onLoad() {
