@@ -33,6 +33,9 @@ For example,
     xxxx
     yyyy
 
+Reminder : be sure to work in .odt format, let's say in libreoffice then save as an .html from libreoffice.  If working in googledocs let's say, be sure to cut and 'paste without formatting' into a libreoffice .odt.  Add periods at the end of the final bolded ojibwe word in a sentence.  There will already be a period after the English word. 
+
+The pagelist doesn't see apostrophes so both the .html file name and the plaintext filename in pagelist.html had to be changed to from Don't Make Snowmen to Dont Make Snowmen in order for both to be paired and to have the text show up when the title is clicked.
 
 
 # For localhost testing
